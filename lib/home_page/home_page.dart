@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rickandmortyapi/ui/pages/characters_page.dart';
+import 'package:rickandmortyapi/character/characterslist.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
