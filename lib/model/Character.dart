@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class Info {
   int count;
   int pages;
@@ -18,6 +16,17 @@ class Info {
   }
 }
 
+class LocationRef {
+  final String name;
+  final String url;
+
+  LocationRef({required this.name, required this.url});
+
+  factory LocationRef.fromJson(Map<String, dynamic> json) {
+    return LocationRef(name: json['name'], url: json['url']);
+  }
+}
+
 class Character {
   final int id;
   final String name;
@@ -28,6 +37,9 @@ class Character {
   final String gender;
   final String image;
   final String url;
+  final LocationRef origin;
+  final LocationRef location;
+  final List<String> episode;
 
   const Character({
     required this.id,
@@ -39,6 +51,9 @@ class Character {
     required this.gender,
     required this.image,
     required this.url,
+    required this.origin,
+    required this.location,
+    required this.episode,
   });
 
   factory Character.fromJson(Map<String, dynamic> json) {
@@ -52,6 +67,9 @@ class Character {
       gender: json['gender'],
       image: json['image'],
       url: json['url'],
+      origin: LocationRef.fromJson(json['origin']),
+      location: LocationRef.fromJson(json['location']),
+      episode: List<String>.from(json['episode']),
     );
   }
 }

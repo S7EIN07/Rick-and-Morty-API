@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:rickandmortyapi/character/charactersdetails.dart';
-import 'package:rickandmortyapi/model/Character.dart';
+import 'package:rickandmortyapi/location/locationdetails.dart';
+import 'package:rickandmortyapi/model/Location.dart';
 
-class CharactersPage extends StatefulWidget {
+class LocationsPage extends StatefulWidget {
   @override
-  State<CharactersPage> createState() => _CharactersPageState();
+  State<LocationsPage> createState() => _LocationsPageState();
 }
 
-class _CharactersPageState extends State<CharactersPage> {
-  final List<Character> characters = [];
+class _LocationsPageState extends State<LocationsPage> {
+  final List<Location> locations = [];
   final ScrollController _scrollController = ScrollController();
 
   int page = 1;
@@ -36,15 +36,15 @@ class _CharactersPageState extends State<CharactersPage> {
     setState(() => isLoading = true);
 
     final response = await http.get(
-      Uri.parse('https://rickandmortyapi.com/api/character/?page=$page'),
+      Uri.parse('https://rickandmortyapi.com/api/location/?page=$page'),
     );
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      final newCharacters = CharacterResponse.fromJson(data).results;
+      final newLocations = LocationResponse.fromJson(data).results;
 
       setState(() {
-        characters.addAll(newCharacters);
+        locations.addAll(newLocations);
         page++;
         hasMore = data["info"]["next"] != null;
         isLoading = false;
@@ -76,7 +76,7 @@ class _CharactersPageState extends State<CharactersPage> {
         title: Image.asset("assets/img/CharactersText.png", height: 50),
         centerTitle: true,
       ),
-      body: characters.isEmpty && isLoading
+      body: locations.isEmpty && isLoading
           ? const Center(
               child: CircularProgressIndicator(
                 color: Color.fromARGB(255, 144, 255, 16),
@@ -84,9 +84,9 @@ class _CharactersPageState extends State<CharactersPage> {
             )
           : ListView.builder(
               controller: _scrollController,
-              itemCount: characters.length + (hasMore ? 1 : 0),
+              itemCount: locations.length + (hasMore ? 1 : 0),
               itemBuilder: (context, index) {
-                if (index == characters.length) {
+                if (index == locations.length) {
                   // Loader no fim da lista
                   return const Padding(
                     padding: EdgeInsets.all(16.0),
@@ -98,15 +98,14 @@ class _CharactersPageState extends State<CharactersPage> {
                   );
                 }
 
-                final character = characters[index];
+                final location = locations[index];
                 return ListTile(
-                  leading: Image.network(character.image),
                   title: Text(
-                    character.name,
+                    location.name,
                     style: const TextStyle(color: Colors.white),
                   ),
                   subtitle: Text(
-                    character.species,
+                    location.type,
                     style: const TextStyle(color: Colors.white70),
                   ),
                   trailing: GestureDetector(
@@ -133,7 +132,7 @@ class _CharactersPageState extends State<CharactersPage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              CharactersDetailsPage(id: character.id),
+                              LocationDetailsPage(id: location.id),
                         ),
                       );
                     },
