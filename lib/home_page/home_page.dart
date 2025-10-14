@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rickandmortyapi/character/characterslist.dart';
+import 'package:rickandmortyapi/episodes/episodeslist.dart';
 import 'package:rickandmortyapi/location/locationlist.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -38,7 +39,10 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                debugPrint("episodes");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EpisodesList()),
+                );
               },
             ),
             GestureDetector(
